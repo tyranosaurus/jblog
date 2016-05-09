@@ -1,14 +1,13 @@
 
 package com.estsoft.jblog.interceptor;
 
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.estsoft.jblog.service.UserService;

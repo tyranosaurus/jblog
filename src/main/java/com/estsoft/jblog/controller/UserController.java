@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.estsoft.jblog.service.BlogService;
+import com.estsoft.jblog.service.CategoryService;
 import com.estsoft.jblog.service.UserService;
 import com.estsoft.jblog.vo.UserVo;
 
@@ -29,15 +30,18 @@ public class UserController
 	@Autowired
 	private BlogService blogService;
 	
+	@Autowired
+	private CategoryService categoryService;
+	
 	@RequestMapping("/joinform")
 	public String joinform()
 	{
 		return "/user/join";
 	}
 	
-	@RequestMapping("/checkemail")
+	@RequestMapping("/checkid")
 	@ResponseBody
-	public Map<String, Object> checkEmail(@RequestParam(value="id", required=true, defaultValue="") String id)
+	public Map<String, Object> checkId(@RequestParam(value="id", required=true, defaultValue="") String id)
 	{      
 		//Map<> 대신 Object 그냥 객체 반환이라고 써도됨
 		UserVo vo = userService.getUser(id);
@@ -59,6 +63,8 @@ public class UserController
 		
 		userService.join(vo);
 		blogService.insert(vo);
+		categoryService.defaultCategory(vo);
+		
 		return "/user/joinsuccess";  // 리다이렉팅
 	}
 	

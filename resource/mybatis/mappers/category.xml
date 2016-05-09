@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!-- sql 매핑 파일 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category">
+
+	<insert id="defaultcategory" parameterType="uservo"> <!-- 인자로 넘겨주는 놈의 타입 -->
+		<![CDATA[
+			insert into category values(null, (select id from blog where user_id = #{id}), '미분류', '디폴트 카테고리 입니다.', 0)
+		]]>
+		<!-- 인자로 받은 vo의 name, message, password를 #{}안에 넣어준다. -->
+		<selectKey keyProperty="no" resultType="int" order="AFTER">
+			select last_insert_id() <!-- selectKey에서는 인서트한 데이터의 no를 뽑아 이 쿼리의 결과가 insert의 
+				vo객체에 프라이머리키로 들어간다. -->
+		</selectKey>  <!-- 얘는 키값만 골라낼 수 있다. 키값(프라이머리)만 뽑아서 보내준다. -->
+
+	</insert>
+
+	<select id="getblogno" resultType="long" parameterType="string">
+		select id
+		from blog 
+		where user_id = #{userId};
+	</select>
+
+	<insert id="insert" parameterType="map"> <!-- 인자로 넘겨주는 놈의 타입 -->
+		<![CDATA[
+			insert into category values(null, #{blogNo}, '${cateName}', '${cateDesc}', 0)
+		]]>
+		<!-- 인자로 받은 vo의 name, message, password를 #{}안에 넣어준다. -->
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			select last_insert_id() <!-- selectKey에서는 인서트한 데이터의 no를 뽑아 이 쿼리의 결과가 insert의 
+				vo객체에 프라이머리키로 들어간다. -->
+		</selectKey>  <!-- 얘는 키값만 골라낼 수 있다. 키값(프라이머리)만 뽑아서 보내준다. -->
+
+	</insert>
+
+	<select id="getlist" resultType="categoryvo" parameterType="long">
+
+		select no as no, 
+			   blog_no as blogNo, 
+			   name as name, 
+			   description as description, 
+			   post_count as postNo
+		from category 
+		where blog_no = #{blogNo};
+
+	</select>
+	
+		<delete id="delete" parameterType="long"> <!-- parameterType은 객체 하나만 받을 수 있다. -->
+		delete
+		from category
+		where no = #{no}
+	</delete>
+
+</mapper>

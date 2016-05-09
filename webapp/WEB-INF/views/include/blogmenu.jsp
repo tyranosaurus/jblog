@@ -34,10 +34,20 @@
 			<c:otherwise>
 				<!-- 로그인 이후의 화면 -->
 				<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/blog/${authUser.id}/blogmanaging">블로그관리</a></li>
 			</c:otherwise>
 		</c:choose>
+		
+		<c:choose>
+			<c:when test="${authUser.id == userId }">
+				<li><a href="${pageContext.request.contextPath}/blog/${authUser.id}/blogmanaging">블로그관리</a></li>
+			</c:when>
+
+			<c:otherwise>
+				<li><a href="${pageContext.request.contextPath}/blog/${authUser.id}">${authUser.id}의 블로그 가기</a></li>
+			</c:otherwise>
+		</c:choose>
+		
+		
 
 	</ul>
 </div>

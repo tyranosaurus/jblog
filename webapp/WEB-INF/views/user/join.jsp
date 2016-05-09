@@ -48,7 +48,7 @@ $(function() {
 						}
 	
 						$.ajax({
-									url : "/jblog/user/checkemail?id=" + id,
+									url : "/jblog/user/checkid?id=" + id,
 									type : "get", // 통신방식 get/post 둘중 하나
 									dataType : "json", //  수신 데이터 타입
 									data : "", 

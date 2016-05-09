@@ -31,4 +31,5 @@
 		    logo_image = #{imageUrl}
 		where user_id = #{userId}
 	</update>
+
 </mapper>

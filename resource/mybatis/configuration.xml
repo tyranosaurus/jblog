@@ -6,10 +6,12 @@
 	<typeAliases>
 		<typeAlias type="com.estsoft.jblog.vo.UserVo" alias="uservo"/> <!-- 아리아스는 모두 소문자로 쓰는게 관례. 대문자로 써도 상관은 없다. -->
 		<typeAlias type="com.estsoft.jblog.vo.BlogVo" alias="blogvo"/> <!-- 아리아스는 모두 소문자로 쓰는게 관례. 대문자로 써도 상관은 없다. -->
+		<typeAlias type="com.estsoft.jblog.vo.CategoryVo" alias="categoryvo"/> <!-- 아리아스는 모두 소문자로 쓰는게 관례. 대문자로 써도 상관은 없다. -->
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
 		<mapper resource="mybatis/mappers/blog.xml" />
+		<mapper resource="mybatis/mappers/category.xml" />
 	</mappers>
 </configuration>

@@ -18,6 +18,8 @@ public class BlogService
 	@Autowired
 	private BlogDao blogDao;
 	
+	private static final String SAVE_PATH = "/temp";
+	
 	public void insert(UserVo vo)
 	{
 		blogDao.insert(vo);
@@ -35,6 +37,25 @@ public class BlogService
 	{
 		blogDao.basicModify(userId, title, imageUrl);
 	}
+	
+	public String upload(MultipartFile logoFile)
+	{
+
+		if( logoFile.isEmpty() == false ) {
+			
+	        String fileOriginalName = logoFile.getOriginalFilename();
+	        String extName = fileOriginalName.substring( fileOriginalName.lastIndexOf(".") + 1, fileOriginalName.length() );  // .확장자
+	        String saveFileName = genSaveFileName( extName );   // 파일 이름 새로 만들어줌 
+	        
+	        writeFile( logoFile, SAVE_PATH, saveFileName );
+	        
+	        String imageUrl = "/jblog/product-images/" + saveFileName;
+	        return imageUrl;
+		}
+		
+        return "";
+	}
+	
 	
 	public void writeFile( MultipartFile file, String path, String fileName ) {
 		FileOutputStream fos = null;
