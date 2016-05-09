@@ -1,10 +1,14 @@
 package com.estsoft.jblog.vo;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class PostVo 
 {
 	private Long no;
 	private Long categoryNo;
+	@NotEmpty
 	private String title;
+	@NotEmpty
 	private String content;
 	private String regDate;
 	public Long getNo() {

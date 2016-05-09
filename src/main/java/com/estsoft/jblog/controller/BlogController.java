@@ -3,6 +3,7 @@ package com.estsoft.jblog.controller;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.estsoft.jblog.annotation.AuthUser;
 import com.estsoft.jblog.service.BlogService;
 import com.estsoft.jblog.service.CategoryService;
 import com.estsoft.jblog.vo.BlogVo;
+import com.estsoft.jblog.vo.CategoryVo;
 import com.estsoft.jblog.vo.UserVo;
 
 @Controller
@@ -64,10 +66,10 @@ public class BlogController
 	public String category(
 			@PathVariable("userId") String userId, 
 			Model model)
-	{
+	{		
 		BlogVo blogVo = blogService.getBlog(userId);
 		model.addAttribute("blogVo", blogVo);
-				
+		
 		return "/blog/blog-admin-category";
 	}
 	
@@ -78,6 +80,11 @@ public class BlogController
 	{
 		BlogVo blogVo = blogService.getBlog(userId);
 		model.addAttribute("blogVo", blogVo);
+		
+		Long blogNo = categoryService.getBlogNo(userId);
+		List<CategoryVo> list = categoryService.getList(blogNo);
+		
+		model.addAttribute("list", list);
 		
 		return "/blog/blog-admin-write";
 	}

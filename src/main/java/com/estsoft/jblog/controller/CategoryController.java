@@ -24,10 +24,10 @@ import com.estsoft.jblog.vo.UserVo;
 public class CategoryController 
 {
 	@Autowired
-	private CategoryService categoryService;
+	private BlogService blogService;
 	
 	@Autowired
-	private BlogService blogService;
+	private CategoryService categoryService;
 	
 	@RequestMapping("/{userId}/insert")
 	@ResponseBody
