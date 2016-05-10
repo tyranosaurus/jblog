@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.estsoft.jblog.service.BlogService;
 import com.estsoft.jblog.service.CategoryService;
+import com.estsoft.jblog.service.PostService;
 import com.estsoft.jblog.vo.BlogVo;
 import com.estsoft.jblog.vo.CategoryVo;
 import com.estsoft.jblog.vo.PostVo;
@@ -28,6 +29,10 @@ public class PostController
 	@Autowired
 	private CategoryService categoryService;
 	
+	@Autowired
+	private PostService postService;
+	
+	
 	@RequestMapping("/{userId}/insert")
 	public String insert(
 			@PathVariable("userId") String userId,
@@ -38,16 +43,18 @@ public class PostController
 		BlogVo blogVo = blogService.getBlog(userId);
 		model.addAttribute("blogVo", blogVo);
 		
+		Long blogNo = categoryService.getBlogNo(userId);
+		List<CategoryVo> list = categoryService.getList(blogNo);
+		
 		if (result.hasErrors())
-		{
-			Long blogNo = categoryService.getBlogNo(userId);
-			List<CategoryVo> list = categoryService.getList(blogNo);
-			
+		{	
 			model.addAttribute("list", list);
-			model.addAllAttributes(result.getModel());  // map 으로 데이터가 들어간다. 
+			model.addAllAttributes(result.getModel());  // map 으로 데이터가 들어간다.
+			
 			return "/blog/blog-admin-write";
 		}
 		
+		postService.insert(postVo);
 		
 		return "redirect:/blog/" + userId;
 	}

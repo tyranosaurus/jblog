@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.estsoft.jblog.annotation.AuthUser;
 import com.estsoft.jblog.service.BlogService;
 import com.estsoft.jblog.service.CategoryService;
+import com.estsoft.jblog.service.PostService;
 import com.estsoft.jblog.vo.BlogVo;
 import com.estsoft.jblog.vo.CategoryVo;
+import com.estsoft.jblog.vo.PostVo;
 import com.estsoft.jblog.vo.UserVo;
 
 @Controller
@@ -33,15 +35,47 @@ public class BlogController
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private PostService postService;
 
 	@RequestMapping("/{userId}")
 	public String blog(
-			@PathVariable("userId") String userId, 
+			@PathVariable("userId") String userId,
+			@RequestParam(value="cateNo", required=true, defaultValue="-1") Long categoryNo,
+			@RequestParam(value="postNo", required=true, defaultValue="-1") Long postNo,
 			Model model)
 	{	
 			BlogVo blogVo = blogService.getBlog(userId);
 			model.addAttribute("blogVo", blogVo);
-			model.addAttribute("authId", userId);
+			
+			Long blogNo = categoryService.getBlogNo(userId);
+			
+			List<CategoryVo> cateList = categoryService.getList(blogNo);
+			model.addAttribute("cateList", cateList);
+			
+			List<PostVo> postList = postService.getList(categoryNo);
+			model.addAttribute("postList", postList);
+		
+			PostVo postVo = postService.getPost(postNo);
+			model.addAttribute("postVo", postVo);
+			
+			if (postNo == -1)
+			{
+				postVo = postService.getRecentPost(categoryNo);
+				model.addAttribute("postVo", postVo);
+			}
+			
+			if (categoryNo == -1 && postNo == -1)
+			{
+				postVo = postService.getDefaultPost();
+				model.addAttribute("postVo", postVo);
+				
+				postList = postService.getList(postVo.getCategoryNo());
+				model.addAttribute("postList", postList);
+			}
+			
+			model.addAttribute("categoryNo", categoryNo);
 
 		return "/blog/blog-main";
 	}
@@ -101,30 +135,40 @@ public class BlogController
 		
 		String imageUrl = blogService.upload(logoFile);
 		
-	    blogService.basicModify(userId, title, imageUrl);
-		
+	    blogService.basicModify(userId, title, "/jblog/"+imageUrl);
+	    
 		return "redirect:/blog/" + userId;
 	}	
-	
-	@RequestMapping(value = "/logoupload", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> logoupload(MultipartHttpServletRequest request)
-	{	
-		Iterator<String> itr = request.getFileNames();
-		String filename = null;
-		Map<String, Object> map = new HashMap<String, Object>();
-		if(itr.hasNext()){
-			//fileUpload
-			MultipartFile mpf = request.getFile(itr.next());
-			filename = blogService.upload(mpf);
 
-			map.put("result", "success");
-			map.put("data", filename);	
-			return map;
-		}
-		else
-		{	
-			return map;
-		}
-	}
+	@RequestMapping("/{userId}/imageUpdate")
+	   @ResponseBody
+	   public Map<String, Object> ajaxList(@PathVariable( "userId" ) String userId,
+	         MultipartHttpServletRequest request, Model model){   
+	      
+		BlogVo blogVo = blogService.getBlog(userId);
+	      model.addAttribute(blogVo);
+	      
+	      
+	      Iterator<String> itr = request.getFileNames(); /* 폼에 파일 선택이 여러개 있으면 여러개 나옴 */
+	      Map<String, Object> map = new HashMap<String, Object>();
+	      if(itr.hasNext()){ /* 지금은 하나라 if, 여러개면 while */
+	         //fileUpload
+	         MultipartFile logoFile = request.getFile(itr.next());
+	         
+	         String imageUrl = blogService.upload(logoFile);
+	            
+
+	            map.put("result", "success"); //response로 '결과 : 성공'을 보내줌
+	            map.put("data",imageUrl); //response로 '데이터 : 파일URL'을 보내줌
+	                 
+	            //upload database
+	            
+	            blogService.imageModify(userId, imageUrl);
+	            
+	         //return map
+	         return map;
+	      }else{   
+	         return map;
+	      }
+	   }
 }

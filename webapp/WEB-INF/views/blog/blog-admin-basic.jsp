@@ -13,30 +13,29 @@
 	src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.9.0.js"></script>
 <script type="text/javascript">
 
-$(function(){	
-	//logo파일 주소가 바뀌었을 때
-	$("#logo-check").on('click', function(){
-		var form = new FormData(document.getElementById('uploadForm'));
-		if (form == ""){
-			return; }
-		$.ajax({
-			url:"/jblog/blog/logoupload/", 
-			data: form,
-			dataType: 'json',
-			processData: false,
-			contentType: false,
-			type: "POST", 
-			success: function(response){	
-					console.log(response.data);
-					$("#logo-img").attr("src", response.data);		
-				},
-			error: function(jqXHR,status,error){ 
-				console.error(status+":"+error);
-			}			
-		});
-	});
-});
-
+$(function(){
+	$("input[type='file']").change(function(){
+	   $file = $(this).val();
+	   if($file == null || $.isEmptyObject($file)) return;
+	   
+	   var formData = new FormData(document.getElementById('uploadForm'));/* 인코딩 타입 지정해준거 */
+	   
+	   $.ajax({
+	      url : "${pageContext.request.contextPath}/blog/${authUser.id}/imageUpdate",
+	      data : formData,
+	      processData : false,
+	      contentType : false,
+	      type : "POST",
+	      success : function(response){
+	         $("#logo-img").attr("src", "${pageContext.request.contextPath}" + response.data );
+	         console.log(response.data);
+	      },
+	      error : function(xhr, status, error) {
+	         console.error(status + " : " + error);
+	      }
+	   })
+	})
+	})
 
 </script>
 
@@ -69,10 +68,6 @@ $(function(){
 			      			<td class="t">&nbsp;</td>
 			      			<td><input id="logo" type="file" name="logo-file"></td>
 			      		</tr>      			
-			<!--       		<tr>
-			      			<td class="t">&nbsp;</td>
-			      			<td><button id = "logo-check">로고 확인</button></td>
-			      		</tr> 이렇게 하면 버튼 눌렀을때 폼이 전송되서 로고확인이 아니라 아예 메인으로 돌아가는 것 같다.-->
 			      		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>
@@ -80,8 +75,6 @@ $(function(){
 			      		</tr>           		
 			      	</table>
 				</form>
-				
-				<button id = "logo-check">로고 확인</button>
 				
 			</div>
 		</div>

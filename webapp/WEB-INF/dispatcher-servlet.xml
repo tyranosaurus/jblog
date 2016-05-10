@@ -99,5 +99,7 @@
 		</property>
 	</bean>
 
+	<!-- AOP auto Proxy 설정 -->
+	<aop:aspectj-autoproxy />
 
 </beans>

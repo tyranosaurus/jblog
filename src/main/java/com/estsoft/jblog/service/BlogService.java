@@ -49,7 +49,7 @@ public class BlogService
 	        
 	        writeFile( logoFile, SAVE_PATH, saveFileName );
 	        
-	        String imageUrl = "/jblog/product-images/" + saveFileName;
+	        String imageUrl = "/product-images/" + saveFileName;
 	        return imageUrl;
 		}
 		
@@ -91,4 +91,9 @@ public class BlogService
         
         return fileName;
 	}
+	
+	public void imageModify(String id, String imageUrl) {
+	      blogDao.imageModify(id, imageUrl);
+	   }
+	
 }

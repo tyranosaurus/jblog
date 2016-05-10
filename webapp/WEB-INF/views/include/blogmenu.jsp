@@ -13,12 +13,12 @@
 
 	<c:choose>
 		<c:when test="${blogVo.title == ''}">
-			<h1 onclick="location.href='/jblog/blog/${authUser.id}'">${blogVo.id}의블로그 입니다.</h1>
+			<h1 onclick="location.href='/jblog/blog/${authUser.id}?cateNo=&postNo='">${blogVo.id}의블로그 입니다.</h1>
 			<!-- 타이틀 없을 때 -->
 		</c:when>
 
 		<c:otherwise>
-			<h1 onclick="location.href='/jblog/blog/${authUser.id}'">${blogVo.title }</h1>
+			<h1 onclick="location.href='/jblog/blog/${authUser.id}?cateNo=&postNo='">${blogVo.title }</h1>
 			<!-- 타이틀 있을떄 -->
 		</c:otherwise>
 	</c:choose>

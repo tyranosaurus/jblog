@@ -17,7 +17,7 @@
 
 	<select id="getblogno" resultType="long" parameterType="string">
 		select id
-		from blog 
+		from blog
 		where user_id = #{userId};
 	</select>
 
@@ -35,17 +35,17 @@
 
 	<select id="getlist" resultType="categoryvo" parameterType="long">
 
-		select no as no, 
-			   blog_no as blogNo, 
-			   name as name, 
-			   description as description, 
-			   post_count as postNo
-		from category 
+		select no as no,
+		blog_no as blogNo,
+		name as name,
+		description as description,
+		post_count as postNo
+		from category
 		where blog_no = #{blogNo};
 
 	</select>
-	
-		<delete id="delete" parameterType="long"> <!-- parameterType은 객체 하나만 받을 수 있다. -->
+
+	<delete id="delete" parameterType="long"> <!-- parameterType은 객체 하나만 받을 수 있다. -->
 		delete
 		from category
 		where no = #{no}

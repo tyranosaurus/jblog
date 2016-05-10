@@ -37,4 +37,12 @@ public class BlogDao
 		
 		sqlSession.update("blog.basicmodify", map);
 	}
+	
+	public void imageModify(String userId, String imageUrl) {
+	       Map<String, Object> map = new HashMap<String, Object>();
+	         map.put("userId", userId);
+	         map.put("imageUrl", imageUrl);
+	         sqlSession.update("blog.imagemodify", map);
+	         
+	    }
 }

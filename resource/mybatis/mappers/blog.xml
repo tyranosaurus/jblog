@@ -22,13 +22,20 @@
 		title as title,
 		logo_image as image
 		from blog
-		where user_id = #{userId}
+		where
+		user_id = #{userId}
 	</select>
 
 	<update id="basicmodify" parameterType="map">
-		update blog	
-		set title = #{title}, 
-		    logo_image = #{imageUrl}
+		update blog
+		set title = #{title},
+		logo_image = #{imageUrl}
+		where user_id = #{userId}
+	</update>
+
+	<update id="imagemodify" parameterType="map">
+		update blog
+		set logo_image = #{imageUrl}
 		where user_id = #{userId}
 	</update>
 
